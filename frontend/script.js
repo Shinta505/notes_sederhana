@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fetch data dari backend
     function fetchNotes() {
-        fetch("https://localhost:5000/notes")
+        fetch("https://backend-103949415038.us-central1.run.app/notes")
             .then(response => response.json())
             .then(data => {
                 tableBody.innerHTML = "";
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const isi = document.getElementById("isi").value;
         const label = document.getElementById("label").value;
 
-        fetch("https://localhost:5000/add-notes", {
+        fetch("https://backend-103949415038.us-central1.run.app/add-notes", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ isi, label })
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (confirm(`Yakin ingin menghapus ${selectedIds.length} catatan?`)) {
             selectedIds.forEach(id => {
-                fetch(`https://localhost:5000/note/${id}`, { method: "DELETE" })
+                fetch(`https://backend-103949415038.us-central1.run.app/note/${id}`, { method: "DELETE" })
                     .then(() => fetchNotes());
             });
         }
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const logoutBtn = document.getElementById("logoutBtn");
 
     logoutBtn.addEventListener("click", function () {
-        fetch("http://localhost:5000/logout", {
+        fetch("https://backend-103949415038.us-central1.run.app/logout", {
             method: "DELETE",
             credentials: "include"
         })
