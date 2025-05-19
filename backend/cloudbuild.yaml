@@ -1,18 +1,25 @@
 steps:
-  # STEP 0: Mengambil file .env dari Google Cloud Storage
+  # STEP 1: Mengambil file .env dari Google Cloud Storage
   - name: "gcr.io/cloud-builders/gsutil"
     args: ["cp", "${_ENV}", ".env"]
 
-  # STEP 1: Membangun Docker image dari folder backend
+  # STEP 2: Memindahkan .env ke folder backend
+  - name: "ubuntu"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - "mv .env backend/.env"
+
+  # STEP 3: Membangun Docker image dari folder backend
   - name: "gcr.io/cloud-builders/docker"
     dir: "backend"
     args: ["build", "-t", "gcr.io/$PROJECT_ID/backend", "."]
 
-  # STEP 2: Mengunggah Docker image ke Google Artifact Registry
+  # STEP 4: Mengunggah Docker image ke Google Artifact Registry
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/$PROJECT_ID/backend"]
 
-  # STEP 3: Deploy ke Cloud Run
+  # STEP 5: Deploy ke Cloud Run
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       [
