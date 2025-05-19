@@ -4,4 +4,4 @@ COPY . .
 RUN npm install
 RUN npm i bcrypt dotenv jsonwebtoken cookie-parser
 EXPOSE 5000
-CMD ["node", "index.js"]
+CMD ["nodemon", "index"]
