@@ -10,7 +10,7 @@ app.set("view engine", "ejs");
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://frontend-shinta-dot-e-13-450704.uc.r.appspot.com/", // <- Diganti sama alamat front-end
+    origin: "https://frontend-shinta-dot-e-13-450704.uc.r.appspot.com", // <- Diganti sama alamat front-end
     credentials: true,
   })
 );
