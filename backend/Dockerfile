@@ -1,20 +1,7 @@
-# Gunakan image Node.js versi full (hindari alpine untuk bcrypt)
-FROM node:20
-
-# Tentukan working directory
+FROM node:20-alpine
 WORKDIR /app
-
-# Salin file dependensi dulu (agar caching npm install bisa efisien)
-COPY package*.json ./
-
-# Install dependensi
-RUN npm install
-
-# Salin seluruh file project
 COPY . .
-
-# Buka port aplikasi
+RUN npm install
+RUN npm i bcrypt dotenv jsonwebtoken cookie-parser
 EXPOSE 5000
-
-# Jalankan aplikasi
 CMD ["node", "index.js"]
