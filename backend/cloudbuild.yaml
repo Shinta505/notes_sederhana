@@ -1,41 +1,39 @@
 steps:
-  # Ngambil data env yg disimpen di cloud storage pake gsuri
+  # STEP 0: Mengambil file .env dari Cloud Storage
   - name: "gcr.io/cloud-builders/gsutil"
-    args: ["cp", "${_ENV}", ".env"]
+    args: ["cp", "${_ENV}", "backend/.env"]
 
-  # Membuat image dengan perintah "cloud build -t gcr.io/$PROJECT_ID/tcc-be ."
-  # Project ID akan secara otomatis terisi ketika melakukan deploy di project yg dipilih
+  # STEP 1: Membangun Docker image dari folder backend
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "gcr.io/$PROJECT_ID/tcc-be", "."]
+    dir: "backend"
+    args: ["build", "-t", "gcr.io/$PROJECT_ID/backend", "."]
 
-  # Meng-upload/push image yg telah dibuat ke Artifact Registry
-  # Pada bagian ini, dijalankan perintah "docker push 'gcr.io/$PROJECT_ID/tcc-be'"
+  # STEP 2: Mengunggah Docker image ke Google Artifact Registry
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/$PROJECT_ID/tcc-be"]
+    args: ["push", "gcr.io/$PROJECT_ID/backend"]
 
-  # Melakukan deploy ke cloud run menggunakan image yg telah di-upload/push pada langkah sebelumnya
-  # Pada bagian ini, dijalankan perintah sebagai berikut.
-  # "gcloud run deploy tcc-be --image 'gcr.io/$PROJECT_ID/tcc-be --allow-unauthenticated'
-  #
-  # Keterangan:
-  # "gcloud run deploy be": Perintah yang digunakan untuk mendeploy service ke cloud run dengan nama "be"
-  # "--image 'gcr.io/$PROJECT_ID/tcc-be'": Image yang akan di-deploy
-  # "--allow-unauthenticated": Agar BE dapat diakses di mana saja tanpa memerlukan autentikasi
+  # STEP 3: Deploy ke Cloud Run
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       [
         "run",
         "deploy",
-        "be",
+        "backend",
         "--image",
-        "gcr.io/$PROJECT_ID/tcc-be",
-        '--timeout',
-        '3600',
-        '--port',
-        '5000',
-        '--region',
-        'asia-southeast2',
+        "gcr.io/$PROJECT_ID/backend",
+        "--timeout",
+        "1000s",
+        "--port",
+        "5000",
+        "--region",
+        "us-central1",
+        "--platform",
+        "managed",
         "--allow-unauthenticated",
       ]
+
+substitutions:
+  _ENV: "gs://nama-bucket-kamu/path-ke-env/backend.env"
+
 options:
   logging: CLOUD_LOGGING_ONLY
