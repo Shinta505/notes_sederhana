@@ -1,12 +1,8 @@
 steps:
   # STEP 0: Mengambil file .env dari Google Cloud Storage
   # -----------------------------------------------------
-  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    entrypoint: "bash"
-    args:
-      - "-c"
-      - |
-        gsutil cp gs://$_BUCKET_NAME/.env backend/.env
+  - name: "gcr.io/cloud-builders/gsutil"
+    args: ["cp", "${_BUCKET_NAME}", ".env"]
 
   # STEP 1: Membangun Docker image dari folder backend
   # --------------------------------------------------
