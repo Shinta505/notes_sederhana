@@ -17,7 +17,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
   }
 
   try {
-    const response = await fetch('https://backend-103949415038.us-central1.run.app/users', {
+    const response = await fetch('http://localhost:5000/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

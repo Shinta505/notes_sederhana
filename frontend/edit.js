@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     inputNoteId.value = noteId;
 
     // Ambil data catatan dari backend
-    fetch(`https://backend-103949415038.us-central1.run.app/note/${noteId}`)
+    fetch(`http://localhost:5000/note/${noteId}`)
         .then(response => response.json())
         .then(note => {
             inputIsi.value = note.isi;
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
     editNoteForm.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        fetch(`https://backend-103949415038.us-central1.run.app/note/${noteId}`, {
+        fetch(`http://localhost:5000/note/${noteId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

@@ -12,7 +12,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
 
   try {
     console.log("Mengirim request login ke backend...");
-    const response = await fetch("https://backend-103949415038.us-central1.run.app/login", {
+    const response = await fetch("http://localhost:5000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
